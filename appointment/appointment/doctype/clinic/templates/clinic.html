@@ -1,0 +1,39 @@
+{% extends "templates/web.html" %} {% block page_content %}
+<h1>{{ title }}</h1>
+
+<p><strong>Address</strong></p>
+<p>{{ doc.address }}</p>
+
+<p><strong>Phone</strong></p>
+<p>{{ doc.contact_number }}</p>
+
+{% set doctor =frappe.get_doc("Doctor",doc.doctor) %}
+<p><strong>Doctor</strong></p>
+<p>{{ doctor.full_name }} {{ doctor.last_name }}</p>
+
+<p><strong>Specialization</strong></p>
+<p>{{ doctor.speciality }}</p>
+
+<p><strong>Qualification</strong></p>
+<p>{{ doctor.qualification }}</p>
+
+<ul>
+  <p><strong>Shift Timings</strong></p>
+  {%set shifts = frappe.get_list("Schedual Shifts", filters={"clinic":
+  doc.name},fields=["title"])%} {% for shift in shifts%}
+
+  <p>{{shift.title}}</p>
+
+  {%endfor%}
+</ul>
+
+<a
+  href="/book-appointment/new?clinic={{doc.name}}"
+  target="_blank"
+  class="btn-lg btn-info"
+  >Book Appointment</a
+>
+
+{% endblock %}
+
+<!-- this is a sample default web page template -->
